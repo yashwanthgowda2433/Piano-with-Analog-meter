@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no" />
+        <title>Krack Instrument Tuner</title>
+        <link rel="stylesheet" href="style.css" />
+        
+    </head>
+    <body>
+      <div class="container" style="height:max-content;">
+        <div class="row">
+            <canvas class="frequency-bars" style="position: unset!important;"></canvas>
+            <div class="meter">
+                <div class="meter-dot"></div>
+                <div class="meter-pointer"></div>
+            </div>
+            <div class="notes">
+                <div class="notes-list"></div>
+                <div class="frequency"><span>Hz</span></div>
+            </div>
+            <div class="a4">A<sub>4</sub> = <span>440</span> Hz</div>
+        </div>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+        <script src="https://cdn.jsdelivr.net/npm/aubiojs"></script>
+        <script src="tuner.js"></script>
+        <script src="meter.js"></script>
+        <script src="frequency-bars.js"></script>
+        <script src="notes.js"></script>
+        <script src="app.js"></script>
+        
+        <!-- <iframe src="file:///C:/Users/ADMIN/Desktop/piano.html" height="300" width="100%" title="Iframe Example"></iframe> -->
+      </div>
+
+  </body>
+</html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no" />
+    <base href="https://www.musicca.com/piano" />
+        <link href="/modules/mod_ads/css/style.css?v=1645596955" rel="stylesheet" type="text/css" />
+        <script type="application/json" class="joomla-script-options new">
+            { "joomla.jtext": { "ERROR": "Error" }, "mod_ads": { "url": "https:\/\/cdn.fuseplatform.net\/publift\/tags\/2\/2548\/fuse.js" }, "csrf.token": "9b5c52ddc28e8ab1a3947b6c67325c68", "system.paths": { "root": "", "base": "" } }
+        </script>
+        <script src="/media/jui/js/jquery.min.js?3f808da81d53f53cb9eb1a4464906f8e"></script>
+        <script src="/modules/mod_ads/js/width_test.js?v=1645596955"></script>
+        <script src="/media/system/js/core.js?3f808da81d53f53cb9eb1a4464906f8e"></script>
+        <script>
+            jQuery(window).on("load", function () {});
+        </script>
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600&display=swap" rel="stylesheet" />
+
+        <link rel="stylesheet" href="/templates/musicca/css/screen.min.css?v=1645596955" />
+
+        <script defer src="/scripts/tooltip/opentip-native-excanvas.min.js"></script>
+        <script defer src="/templates/musicca/js/app.min.js?v=1645596955"></script>
+  </head>
+  <body>
+    
+    <div class="container">
+      <div style="display: none;"></div>
+      <div id="navigation-mobile" class="navigation__mobile">
+          <div class="container">
+              <div class="mobile__tools">
+                  <style>
+                      .default__page__header {
+                          padding-top: 15px;
+                          text-align: center;
+                      }
+                      .toggle-menu-mobile span > span {
+                          position: absolute;
+
+                          height: 1px;
+
+                          width: 1px;
+
+                          clip: rect(1px, 1px, 1px, 1px);
+
+                          padding: 0;
+
+                          border: 0;
+
+                          overflow: hidden;
+                      }
+
+                      .header-content .navigation__lang .lang-menu {
+                          overflow-x: hidden;
+                      }
+                  </style>
+                  <noscript>
+                      <style>
+                          /*------------------*/
+
+                          .navigation__top {
+                              z-index: 9;
+                          }
+
+                          .navigation__mobile,
+                          .fix__content {
+                              position: relative;
+                          }
+
+                          .mobile_menu__toggle {
+                              display: none;
+                          }
+
+                          .mobile__menu {
+                              display: block;
+                          }
+
+                          li.mobile_menu__item:hover ul {
+                              display: block;
+                          }
+                          .header-content .navigation__lang .lang_button .current-lang {
+                              cursor: auto;
+                          }
+
+                          .header-content .navigation__lang .lang_button .current-lang:hover > .sprite {
+                              opacity: 1;
+                          }
+                      </style>
+                  </noscript>
+              </div>
+          </div>
+      </div>
+
+      <div class="fix__content">
+          <div class="wrapper">
+              <div class="content">
+                  <div class="container">
+                      <div class="row flex__row">
+                          <div class="ads-box_top">
+                              <div></div>
+                          </div>
+
+                          <article class="default__content item-page" itemscope itemtype="https://schema.org/Article">
+                              <meta itemprop="inLanguage" content="en" />
+
+                              <div class="page-header default__page__header">
+                                  <h1 class="h1 default__page__title" itemprop="name">
+                                      Virtual piano
+                                  </h1>
+                              </div>
+
+                              <div itemprop="articleBody">
+                                  <div class="default__page__content">
+                                      <link rel="stylesheet" href="/scripts/piano/piano.min.css" />
+                                      <div id="piano">
+                                          <div class="btn-group-piano">
+                                              <button class="mark"></button>
+                                              <button class="hideNotes"></button>
+                                              <button class="playAll hidden"></button>
+                                              <button class="clear btn-reset hidden"></button>
+                                          </div>
+                                          <div class="piano-wrapper">
+                                              <ul class="piano">
+                                                  <li class="key">
+                                                      <span class="white-key" data-key="84" data-note="2c"><i></i></span>
+                                                      <span class="black-key" data-key="54" data-note="2cis"><i></i></span>
+                                                  </li>
+                                                  <li class="key">
+                                                      <span class="white-key" data-key="89" data-note="2d"><i></i></span>
+                                                      <span class="black-key" data-key="55" data-note="2dis"><i></i></span>
+                                                  </li>
+                                                  <li class="key">
+                                                      <span class="white-key" data-key="85" data-note="2e"><i></i></span>
+                                                  </li>
+                                                  <li class="key">
+                                                      <span class="white-key" data-key="73" data-note="2f"><i></i></span>
+                                                      <span class="black-key" data-key="57" data-note="2fis"><i></i></span>
+                                                  </li>
+                                                  <li class="key">
+                                                      <span class="white-key" data-key="79" data-note="2g"><i></i></span>
+                                                      <span class="black-key" data-key="48" data-note="2gis"><i></i></span>
+                                                  </li>
+                                                  <li class="key">
+                                                      <span class="white-key" data-key="80" data-note="3a"><i></i></span>
+                                                      <span class="black-key" data-key="187" data-additional-key="189" data-note="3ais"><i></i></span>
+                                                  </li>
+                                                  <li class="key">
+                                                      <span class="white-key" data-key="219" data-note="3b"><i></i></span>
+                                                  </li>
+                                              </ul>
+                                          </div>
+                                      </div>
+                                      <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.0.15/howler.core.min.js"></script>
+                                      <script>
+                                          // PIANO TRANSLATION PART
+                                          var PIANO_TRANSLATION = {
+                                              url: "piano?",
+                                              buttonNames: {
+                                                  markNotes: "Mark",
+                                                  showHideNotes: {
+                                                      show: "Show note names",
+                                                      hide: "Hide note names",
+                                                  },
+                                                  playNotes: "Play",
+                                                  reset: "Clear",
+                                              },
+                                              noteNames: {
+                                                  c: "C",
+                                                  cis: '<span><span>C</span><span class="piano-accidental">♯</span></span></span>' + '<span><span>D</span><span class="piano-accidental">♭</span></span></span>',
+                                                  d: "D",
+                                                  dis: '<span><span>D</span><span class="piano-accidental">♯</span></span></span>' + '<span><span>E</span><span class="piano-accidental">♭</span></span></span>',
+                                                  e: "E",
+                                                  f: "F",
+                                                  fis: '<span><span>F</span><span class="piano-accidental">♯</span></span></span>' + '<span><span>G</span><span class="piano-accidental">♭</span></span></span>',
+                                                  g: "G",
+                                                  gis: '<span><span>G</span><span class="piano-accidental">♯</span></span></span>' + '<span><span>A</span><span class="piano-accidental">♭</span></span></span>',
+                                                  a: "A",
+                                                  ais: '<span><span>A</span><span class="piano-accidental">♯</span></span></span>' + '<span><span>B</span><span class="piano-accidental">♭</span></span></span>',
+                                                  b: "B",
+                                              },
+                                              keys: {
+                                                  "1c": [90],
+                                                  "1cis": [83],
+                                                  "1d": [88],
+                                                  "1dis": [68],
+                                                  "1e": [67],
+                                                  "1f": [81],
+                                                  "1fis": [50],
+                                                  "1g": [87],
+                                                  "1gis": [51],
+                                                  "2a": [69],
+                                                  "2ais": [52],
+                                                  "2b": [82],
+                                                  "2c": [84],
+                                                  "2cis": [54],
+                                                  "2d": [89],
+                                                  "2dis": [55],
+                                                  "2e": [85],
+                                                  "2f": [73],
+                                                  "2fis": [57],
+                                                  "2g": [79],
+                                                  "2gis": [48],
+                                                  "3a": [80],
+                                                  "3ais": [187, 189, 173, 8],
+                                                  "3b": [219],
+                                                  "3c": [221],
+                                                  "3cis": [70],
+                                                  "3d": [86],
+                                                  "3dis": [71],
+                                                  "3e": [66],
+                                                  "3f": [78],
+                                                  "3fis": [74],
+                                                  "3g": [77],
+                                                  "3gis": [75],
+                                                  "4a": [188],
+                                                  "4ais": [76],
+                                                  "4b": [190],
+                                              },
+                                          };
+                                      </script>
+                                      <script src="/scripts/piano/piano.min.js"></script>
+                                      <br />
+                                      <br />
+                                  </div>
+                              </div>
+                          </article>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+    </div>
+  </body>
+</html>
